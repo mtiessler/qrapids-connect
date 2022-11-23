@@ -36,7 +36,7 @@ public class SonarqubeSourceConfig extends AbstractConfig {
     
     
     // for issues
-    public static final String SONAR_PROJECT_KEYS_CONFIG = "sonar.project.key";
+    public static final String SONAR_PROJECT_KEYS_CONFIG = "sonar.project.keys";
     public static final String SONAR_PROJECT_KEYS_CONFIG_DISPLAY = "Sonar project keys for issue collection.";
     public static final String SONAR_PROJECT_KEYS_CONFIG_DOC = "Sonar project keys for issue collection.";
     

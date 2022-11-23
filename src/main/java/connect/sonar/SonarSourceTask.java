@@ -84,9 +84,7 @@ public class SonarSourceTask extends SourceTask {
 			}
 		}
 
-		if (sonarProjectKeys ==null) {
-			throw new ConnectException("No base Component and no componentRoot specified, exiting.");
-		}
+
 		if ((sonarInterval == null || sonarInterval.isEmpty())) {
 			interval = 3600;
 		} else {
@@ -101,7 +99,7 @@ public class SonarSourceTask extends SourceTask {
 
 		if (lastPoll != 0 && System.currentTimeMillis() < (lastPoll + (interval * 1000))) {
 				log.info("exit polling {} secs since last poll.",
-						( System.currentTimeMillis() - lastPoll ) / 1000 );
+						(System.currentTimeMillis() - lastPoll) / 1000);
 				Thread.sleep(1000);
 				return records;
 		}

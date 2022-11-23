@@ -10,10 +10,13 @@ import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.source.SourceConnector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
@@ -24,13 +27,9 @@ import org.slf4j.LoggerFactory;
 public class SonarSourceConnector extends SourceConnector {
 	
 	private final Logger log = LoggerFactory.getLogger(SonarSourceConnector.class);
-	
-	private String cloudToken;
-	private String cloudOrganizationName;
-	private String cloudOrganizationKey;
-	private String cloudProjectKeys;
+	private ArrayList<String> cloudTokens;
+	private ArrayList<String> cloudProjectKeys;
 	private String cloudMetricKeys;
-	
 	private String sonarMeasureTopic;
 	private String sonarIssueTopic;
 	private String sonarInterval;
@@ -46,19 +45,35 @@ public class SonarSourceConnector extends SourceConnector {
 	public void start(Map<String, String> props) {
 		String propsAux = props.toString();
 		log.info("properties: {}", propsAux);
-		cloudToken = props.get(SonarSourceConfig.SONAR_TOKEN_CONFIG);
-		cloudOrganizationName = props.get(SonarSourceConfig.SONAR_ORGANIZATION_NAME_CONFIG);
-		cloudOrganizationKey = props.get(SonarSourceConfig.SONAR_ORGANIZATION_KEY_CONFIG);
-		cloudProjectKeys = props.get(SonarSourceConfig.SONAR_PROJECT_KEYS_CONFIG);
+		getCloudTokens();
+		getProjectKeys();
 		cloudMetricKeys = props.get(SonarSourceConfig.SONAR_METRIC_KEYS_CONFIG);
 		sonarMeasureTopic = props.get(SonarSourceConfig.SONAR_MEASURE_TOPIC_CONFIG);
 		sonarIssueTopic = props.get(SonarSourceConfig.SONAR_ISSUE_TOPIC_CONFIG);
 		sonarInterval = props.get(SonarSourceConfig.SONAR_INTERVAL_SECONDS_CONFIG);
 		sonarSnapshotDate = props.get(SonarSourceConfig.SONAR_SNAPSHOTDATE_CONFIG);
-		if ( cloudToken == null || cloudToken.isEmpty() )
-			throw new ConnectException("SonarqubeSourceConnector configuration must include 'cloud.token' setting");
+
 	}
 
+	private void getCloudTokens() {
+		Stream<String> stream = Arrays
+				.stream(SonarSourceConfig.SONAR_TOKEN_CONFIG.split(","));
+		cloudTokens = stream.collect(Collectors.toCollection(ArrayList::new));
+		log.info("Tokens: {}", cloudTokens);
+		if (cloudTokens.isEmpty())
+			throw new ConnectException("SonarCloudSourceConnector configuration must include 'sonar.tokens' setting");
+	}
+
+
+	private void getProjectKeys() {
+		Stream<String> stream = Arrays
+				.stream(SonarSourceConfig.SONAR_PROJECT_KEYS_CONFIG.split(","));
+		cloudProjectKeys = stream.collect(Collectors.toCollection(ArrayList::new));
+		log.info("Project Keys: {}", cloudProjectKeys);
+		if (cloudProjectKeys.isEmpty()) {
+			throw new ConnectException("SonarCloudSourceConnector configuration must include 'sonar.project.keys' setting");
+		}
+	}
 	@Override
 	public Class<? extends Task> taskClass() {
 		return SonarSourceTask.class;
@@ -66,22 +81,20 @@ public class SonarSourceConnector extends SourceConnector {
 
 	@Override
 	public List<Map<String, String>> taskConfigs(int maxTasks) {
-		  ArrayList<Map<String, String>> configs = new ArrayList<>();
-		  
-		  Map<String, String> config = new HashMap<>();
-		  
-		  config.put(SonarSourceConfig.SONAR_TOKEN_CONFIG, cloudToken);
-		  config.put(SonarSourceConfig.SONAR_ORGANIZATION_NAME_CONFIG, cloudOrganizationName);
-		  config.put(SonarSourceConfig.SONAR_ORGANIZATION_KEY_CONFIG, cloudOrganizationKey);
-		  config.put(SonarSourceConfig.SONAR_PROJECT_KEYS_CONFIG, cloudProjectKeys);
-		  config.put(SonarSourceConfig.SONAR_MEASURE_TOPIC_CONFIG, sonarMeasureTopic);
-		  config.put(SonarSourceConfig.SONAR_METRIC_KEYS_CONFIG, cloudMetricKeys);
-		  config.put(SonarSourceConfig.SONAR_ISSUE_TOPIC_CONFIG, sonarIssueTopic);
-		  config.put(SonarSourceConfig.SONAR_INTERVAL_SECONDS_CONFIG, "" + sonarInterval);
-		  config.put(SonarSourceConfig.SONAR_SNAPSHOTDATE_CONFIG, sonarSnapshotDate);
-
-		  configs.add(config);
-		  return configs;
+		//ExecutorService executorService = Executors.newFixedThreadPool(maxTasks);
+		ArrayList<Map<String, String>> configs = new ArrayList<>();
+		for(int i = 0; i < maxTasks; ++i) {
+			Map<String, String> config = new HashMap<>();
+			config.put(SonarSourceConfig.SONAR_TOKEN_CONFIG, cloudTokens.get(i));
+			config.put(SonarSourceConfig.SONAR_PROJECT_KEYS_CONFIG, cloudProjectKeys.get(i));
+			config.put(SonarSourceConfig.SONAR_MEASURE_TOPIC_CONFIG, sonarMeasureTopic);
+			config.put(SonarSourceConfig.SONAR_METRIC_KEYS_CONFIG, cloudMetricKeys);
+			config.put(SonarSourceConfig.SONAR_ISSUE_TOPIC_CONFIG, sonarIssueTopic);
+			config.put(SonarSourceConfig.SONAR_INTERVAL_SECONDS_CONFIG, "" + sonarInterval);
+			config.put(SonarSourceConfig.SONAR_SNAPSHOTDATE_CONFIG, sonarSnapshotDate);
+			configs.add(config);
+		}
+		return configs;
 	}
 
 	@Override

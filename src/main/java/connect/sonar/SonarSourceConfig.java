@@ -19,19 +19,19 @@ public class SonarSourceConfig extends AbstractConfig {
 
 
     /* SonarCloud API */
-    public static final String SONAR_TOKEN_CONFIG = "sonar.token";
-    public static final String SONAR_TOKEN_CONFIG_DISPLAY = "SonarCloud api token";
-    public static final String SONAR_TOKEN_CONFIG_DOC = "SonarCloud api token for API requests";
+    public static final String SONAR_TOKEN_CONFIG = "sonar.tokens";
+    public static final String SONAR_TOKEN_CONFIG_DISPLAY = "SonarCloud api tokens";
+    public static final String SONAR_TOKEN_CONFIG_DOC = "SonarCloud api tokens for API requests";
 
-    public static final String SONAR_ORGANIZATION_NAME_CONFIG = "sonar.organization.name";
-    public static final String SONAR_ORGANIZATION_NAME_CONFIG_DISPLAY = "SonarCloud organization name";
-    public static final String SONAR_ORGANIZATION_NAME_CONFIG_DOC = "SonarCloud organization name for API requests";
+    // public static final String SONAR_ORGANIZATION_NAME_CONFIG = "sonar.organization.names";
+    // public static final String SONAR_ORGANIZATION_NAME_CONFIG_DISPLAY = "SonarCloud organization names";
+    // public static final String SONAR_ORGANIZATION_NAME_CONFIG_DOC = "SonarCloud organization names for API requests";
 
-    public static final String SONAR_ORGANIZATION_KEY_CONFIG = "sonar.organization.key";
-    public static final String SONAR_ORGANIZATION_KEY_CONFIG_DISPLAY = "SonarCloud organization key";
-    public static final String SONAR_ORGANIZATION_KEY_CONFIG_DOC = "SonarCloud organization key for API requests";
+    // public static final String SONAR_ORGANIZATION_KEY_CONFIG = "sonar.organization.keys";
+    // public static final String SONAR_ORGANIZATION_KEY_CONFIG_DISPLAY = "SonarCloud organization keys";
+    // public static final String SONAR_ORGANIZATION_KEY_CONFIG_DOC = "SonarCloud organization keys for API requests";
 
-    public static final String SONAR_PROJECT_KEYS_CONFIG = "sonar.project.key";
+    public static final String SONAR_PROJECT_KEYS_CONFIG = "sonar.project.keys";
     public static final String SONAR_PROJECT_KEYS_CONFIG_DISPLAY = "SonarCloud project keys for issue collection.";
     public static final String SONAR_PROJECT_KEYS_CONFIG_DOC = "SonarCloud project keys for API requests";
     
@@ -83,6 +83,7 @@ public class SonarSourceConfig extends AbstractConfig {
                         1,
                         ConfigDef.Width.LONG,
                         SONAR_TOKEN_CONFIG_DISPLAY)
+                /*
                 .define(SONAR_ORGANIZATION_NAME_CONFIG,
                         ConfigDef.Type.STRING,
                         "",
@@ -91,7 +92,8 @@ public class SonarSourceConfig extends AbstractConfig {
                         SONAR_GROUP,
                         2,
                         ConfigDef.Width.MEDIUM,
-                        SONAR_ORGANIZATION_NAME_CONFIG_DISPLAY)
+                        SONAR_ORGANIZATION_NAME_CONFIG_DISPLAY)*/
+                /*
                 .define(SONAR_ORGANIZATION_KEY_CONFIG,
                         ConfigDef.Type.STRING,
                         "",
@@ -100,7 +102,7 @@ public class SonarSourceConfig extends AbstractConfig {
                         SONAR_GROUP,
                         3,
                         ConfigDef.Width.MEDIUM,
-                        SONAR_ORGANIZATION_KEY_CONFIG_DISPLAY)
+                        SONAR_ORGANIZATION_KEY_CONFIG_DISPLAY)*/
                 .define(SONAR_PROJECT_KEYS_CONFIG,
                         ConfigDef.Type.STRING,
                         "",
