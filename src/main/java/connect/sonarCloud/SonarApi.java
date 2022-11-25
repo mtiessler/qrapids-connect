@@ -1,6 +1,6 @@
 
 
-package connect.sonar;
+package connect.sonarCloud;
 
 import com.google.gson.Gson;
 import model.sonarqube.issues.SonarIssuesResult;

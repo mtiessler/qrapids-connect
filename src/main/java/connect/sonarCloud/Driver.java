@@ -1,4 +1,4 @@
-package connect.sonar;
+package connect.sonarCloud;
 
 import org.apache.kafka.connect.source.SourceRecord;
 import util.PropertyFile;

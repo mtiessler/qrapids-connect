@@ -3,7 +3,7 @@
  * terms of the Apache License 2.0 license
  */
 
-package connect.sonar;
+package connect.sonarCloud;
 
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaBuilder;

@@ -7,7 +7,7 @@ package model.sonarCloud.issues;
 
 /**
  * Sonarqube Issues API result
- * @author Axel Wickenkamp
+ * @author Axel Wickenkamp & Max Tiessler
  *
  */
 public class Issue {

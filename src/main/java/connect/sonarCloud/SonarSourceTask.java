@@ -4,7 +4,7 @@
  * terms of the Apache License 2.0 license.
  */
 
-package connect.sonar;
+package connect.sonarCloud;
 
 import model.sonarqube.issues.Issue;
 import model.sonarqube.issues.SonarIssuesResult;
