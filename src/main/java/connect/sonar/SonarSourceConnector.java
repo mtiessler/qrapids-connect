@@ -35,6 +35,25 @@ public class SonarSourceConnector extends SourceConnector {
 	private String sonarInterval;
 	private String sonarSnapshotDate;
 
+	private void getCloudTokens() {
+		Stream<String> stream = Arrays
+				.stream(SonarSourceConfig.SONAR_TOKEN_CONFIG.split(","));
+		cloudTokens = stream.collect(Collectors.toCollection(ArrayList::new));
+		log.info("Tokens: {}", cloudTokens);
+		if (cloudTokens.isEmpty())
+			throw new ConnectException("SonarCloudSourceConnector configuration must include 'sonar.tokens' setting");
+	}
+
+
+	private void getProjectKeys() {
+		Stream<String> stream = Arrays
+				.stream(SonarSourceConfig.SONAR_PROJECT_KEYS_CONFIG.split(","));
+		cloudProjectKeys = stream.collect(Collectors.toCollection(ArrayList::new));
+		log.info("Project Keys: {}", cloudProjectKeys);
+		if (cloudProjectKeys.isEmpty()) {
+			throw new ConnectException("SonarCloudSourceConnector configuration must include 'sonar.project.keys' setting");
+		}
+	}
 
 	@Override
 	public String version() {
@@ -55,25 +74,7 @@ public class SonarSourceConnector extends SourceConnector {
 
 	}
 
-	private void getCloudTokens() {
-		Stream<String> stream = Arrays
-				.stream(SonarSourceConfig.SONAR_TOKEN_CONFIG.split(","));
-		cloudTokens = stream.collect(Collectors.toCollection(ArrayList::new));
-		log.info("Tokens: {}", cloudTokens);
-		if (cloudTokens.isEmpty())
-			throw new ConnectException("SonarCloudSourceConnector configuration must include 'sonar.tokens' setting");
-	}
 
-
-	private void getProjectKeys() {
-		Stream<String> stream = Arrays
-				.stream(SonarSourceConfig.SONAR_PROJECT_KEYS_CONFIG.split(","));
-		cloudProjectKeys = stream.collect(Collectors.toCollection(ArrayList::new));
-		log.info("Project Keys: {}", cloudProjectKeys);
-		if (cloudProjectKeys.isEmpty()) {
-			throw new ConnectException("SonarCloudSourceConnector configuration must include 'sonar.project.keys' setting");
-		}
-	}
 	@Override
 	public Class<? extends Task> taskClass() {
 		return SonarSourceTask.class;

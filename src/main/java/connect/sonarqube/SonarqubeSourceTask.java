@@ -27,7 +27,7 @@ import model.sonarqube.issues.Issue;
 import model.sonarqube.issues.SonarIssuesResult;
 import model.sonarqube.measures.Component;
 import model.sonarqube.measures.Measure;
-import model.sonarqube.measures.SonarMeasuresResult;
+import model.sonarCloud.measures.SonarMeasuresResult;
 
 /**
  * Kafka Connector Task for Sonarqube

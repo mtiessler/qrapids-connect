@@ -8,7 +8,7 @@ package connect.sonarqube;
 import com.google.gson.Gson;
 
 import model.sonarqube.issues.SonarIssuesResult;
-import model.sonarqube.measures.SonarMeasuresResult;
+import model.sonarCloud.measures.SonarMeasuresResult;
 import rest.RESTInvoker;
 
 /**

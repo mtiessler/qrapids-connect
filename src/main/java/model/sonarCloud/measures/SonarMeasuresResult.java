@@ -4,12 +4,13 @@
  * terms of the Apache License 2.0 license
  */
 
-package model.sonarqube.measures;
+package model.sonarCloud.measures;
 
 import model.sonarqube.Paging;
+import model.sonarqube.measures.Component;
 
 /**
- * SonarcubeMeasuresResult API result
+ * SonarCloudMeasuresResult API result
  * @author Max Tiessler & Axel Wickenkamp
  *
  */
